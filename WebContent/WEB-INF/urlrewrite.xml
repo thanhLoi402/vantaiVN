@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<urlrewrite>
+    <rule>
+        <from>/trang-chu.html</from>
+        <to>/wap/trangchu.jsp</to>
+    </rule>
+    <rule>
+        <from>/home.html</from>
+        <to>/wap/trangchu.jsp?ungData=1</to>
+    </rule>
+    <rule>
+        <from>/([A-Z0-9-]+)/ung-data.html</from>
+        <to>/wap/trangchu.jsp?chanel=$1&amp;ungData=2</to>
+    </rule>
+    <rule>
+        <from>/ung-data.html</from>
+        <to>/wap/trangchu.jsp?ungData=2</to>
+    </rule>
+    <rule>
+        <from>/trang-chu-splus.html</from>
+        <to>/wap/trangchu.jsp?ungData=4</to>
+    </rule>
+    <rule>
+        <from>/chinh-sach.html</from>
+        <to>/wap/chinhsach.jsp</to>
+    </rule>
+    <rule>
+        <from>/chinh-sach-dinh-vu.html</from>
+        <to>/wap/chinhsachdichvu.jsp</to>
+    </rule>
+    <rule>
+        <from>/xac-thuc.html</from>
+        <to>/wap/authen3g.jsp</to>
+    </rule>
+    <rule>
+        <from>/addActionLevel</from>
+        <to>/api/splus/actionLevel/addActionLevel.jsp</to>
+    </rule>
+    <rule>
+        <from>/authenToken</from>
+        <to>/api/splus/authenToken.jsp</to>
+    </rule>
+</urlrewrite>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="WebApp_ID" version="2.5">
+
+    <display-name>cms</display-name>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>default.html</welcome-file>
+        <welcome-file>default.htm</welcome-file>
+        <welcome-file>default.jsp</welcome-file>
+    </welcome-file-list>
+
+
+		
+    <listener>
+        <listener-class>tdt.listener.SessionCounterListener</listener-class>
+    </listener>
+
+    <error-page>
+        <error-code>200</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>302</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>504</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>503</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500.html</location>
+    </error-page>
+
+	<servlet>
+        <servlet-name>ExportReportMonthly</servlet-name>
+        <servlet-class>tdt.service.servlet.ExportReportMonthlyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExportReportMonthly</servlet-name>
+        <url-pattern>/exp/report/monthly</url-pattern>
+    </servlet-mapping>
+ 
+    <servlet>
+        <servlet-name>CaptcharServlet</servlet-name>
+        <servlet-class>tdt.service.servlet.CaptcharServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CaptcharServlet</servlet-name>
+        <url-pattern>/captcha.gif</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CallProcedures</servlet-name>
+        <servlet-class>tdt.service.servlet.CallProcedures</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CallProcedures</servlet-name>
+        <url-pattern>/callProcedures</url-pattern>
+    </servlet-mapping>
+
+<!--    <servlet>
+        <servlet-name>ConnectorServlet</servlet-name>
+        <servlet-class>net.fckeditor.connector.ConnectorServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>	
+    <servlet-mapping>
+        <servlet-name>ConnectorServlet</servlet-name>
+        <url-pattern>
+            /fckeditor/editor/filemanager/connectors/*
+        </url-pattern>
+    </servlet-mapping> -->
+	<display-name>SampleProject</display-name>
+ 	<welcome-file-list>
+  	<welcome-file>index.jsp</welcome-file>
+ 	</welcome-file-list>
+ 	
+ 	
+ 	<servlet>
+	  	<servlet-name>ExportToExcel</servlet-name>
+	  	<servlet-class>tdt.service.servlet.ExportReportMonthlyServlet</servlet-class>
+ 	</servlet>
+ 	<servlet-mapping>
+  		<servlet-name>ExportToExcel</servlet-name>
+  		<url-pattern>/exporttoexcel</url-pattern>
+ 	</servlet-mapping>
+	
+    <!-- configuration ckfinder -->
+	
+    <!--servlet>
+        <servlet-name>ConnectorServlet-n</servlet-name>
+        <servlet-class>tdt.db.service.splus.ConnectorServlet</servlet-class>
+        <init-param>
+            <description>
+                Path to configuration file can be relative path inside application,
+                absolute path on local file system or UNC path.
+            </description>
+            <param-name>XMLConfig</param-name>
+            <param-value>/WEB-INF/config.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConnectorServlet-n</servlet-name>
+        <url-pattern>
+            /ckeditor/ckfinder/core/connector/java/connector.java
+        </url-pattern>
+    </servlet-mapping--> 
+
+	
+    <filter>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--  
+      <servlet>
+          <servlet-name>ConnectorServlet</servlet-name>
+          <servlet-class>net.fckeditor.connector.ConnectorServlet</servlet-class>
+      </servlet>
+      <servlet-mapping>
+          <servlet-name>ConnectorServlet</servlet-name>
+          <url-pattern>/fckeditor/editor/filemanager/connectors/*</url-pattern>
+      </servlet-mapping>
+    -->
+</web-app>

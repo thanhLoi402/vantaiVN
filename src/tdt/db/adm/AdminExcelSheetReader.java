@@ -132,8 +132,8 @@ public class AdminExcelSheetReader {
 			System.out.println(name+"--->name");
 			rs.close();
 			preStmt.close();
-			strSQL= " insert into ADMIN_ROLE (ID, ADMIN, LINK_ID, IS_SELECT, IS_INSERT, IS_UPDATE, IS_DELETE, GEN_DATE, CREATED_BY) " +
-					" values(ADMIN_ROLE_SEQ.nextval, ?, ?, ?, ?, ?, ?, sysdate, sysdate)";
+			strSQL= " insert into ADMIN_ROLE ( ADMIN, LINK_ID, IS_SELECT, IS_INSERT, IS_UPDATE, IS_DELETE, GEN_DATE, CREATED_BY) " +
+					" values( ?, ?, ?, ?, ?, ?, current_timestamp, current_timestamp)";
 			preStmt = conn.prepareStatement(strSQL);
 			preStmt.setString(1, name);
 			preStmt.setBigDecimal(2,new BigDecimal(410));

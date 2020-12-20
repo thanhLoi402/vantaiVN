@@ -8,7 +8,7 @@
 <%
 	String admin = request.getParameter("admin");
 	if(admin!=null && !admin.equals("")){
-		Vector<AdminLink> cAdminLink = adminLinkDAO.getTreeView(-1);
+		Vector<AdminLink> cAdminLink = adminLinkDAO.getTreeView2(new BigDecimal(0), -1); 
 		Collection cAdminRole = adminRoleDAO.findAllObjHaskey(admin,"",1,1000);
 %>
 	<table>							

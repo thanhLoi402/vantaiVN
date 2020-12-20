@@ -41,7 +41,7 @@
 		}catch(Exception ex){}
 	}
 	
-	Vector<AdminLink> cAdminLink = adminLinkDAO.getTreeView(-1);
+	Vector<AdminLink> cAdminLink = adminLinkDAO.getTreeView2(new BigDecimal(0), -1); 
  %>
  	<script type="text/javascript">
  		function showMenu(id){

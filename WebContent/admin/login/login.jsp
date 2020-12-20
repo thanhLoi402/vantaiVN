@@ -1,3 +1,4 @@
+<%@page import="java.math.BigDecimal"%>
 <%@page import="java.net.InetAddress"%>
 <%@page import="tdt.util.network.IPv4Tool"%>
 <%@page import="java.util.Vector"%>
@@ -132,7 +133,8 @@
 					Collection cAdminRole = adminRoleDAO.findAllObjHaskey(adm.getUserName(), "", 1, 1000);
 					session.setAttribute("datavasosp.adm.role", cAdminRole);
 					session.setAttribute("datavasosp.adm.menu",
-							adminLinkDAO.getTreeView2Level("0,9"));
+//							adminLinkDAO.getTreeView2Level("0,9"));
+                                                        adminLinkDAO.getTreeView2(new BigDecimal(0), 0));
 					session.setAttribute("datavasosp.adm.menuAll",
 							adminLinkDAO.findAll());
 					session.setAttribute("datavasosp.adm.linklogin", request.getContextPath() + "/admin/login/login.jsp");

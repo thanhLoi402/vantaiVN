@@ -185,7 +185,7 @@ public class DBPoolX {
         try {
             Class.forName(param.getDriver());
             conn = DriverManager.getConnection(param.getUrl(), param.getUser(), param.getPassword());
-        } catch (ClassNotFoundException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return conn;

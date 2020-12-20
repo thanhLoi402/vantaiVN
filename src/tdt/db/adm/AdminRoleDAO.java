@@ -19,8 +19,8 @@ public class AdminRoleDAO {
 
     public AdminRoleDAO() {
         try {
-            poolAdStandby = DBPoolX.getInstance(DBPoolXName.AD_SPLUS_STANBY);
-            poolAdActive = DBPoolX.getInstance(DBPoolXName.AD_SPLUS_ACTIVE);
+            poolAdStandby = DBPoolX.getInstance(DBPoolXName.AD_STANBY);
+            poolAdActive = DBPoolX.getInstance(DBPoolXName.AD_ACTIVE);
             logger = new Logger(this.getClass().getName());
         } catch (Exception e) {
         }
@@ -48,7 +48,7 @@ public class AdminRoleDAO {
                 id = rs.getBigDecimal("ID");
                 rs.close();
                 preStmt.close();
-                strSQL = " update ADMIN_ROLE set ADMIN=?, LINK_ID=?, IS_SELECT=?, IS_INSERT=?, IS_UPDATE=?, IS_DELETE=?, LAST_UPDATED=sysdate where ID=? ";
+                strSQL = " update ADMIN_ROLE set ADMIN=?, LINK_ID=?, IS_SELECT=?, IS_INSERT=?, IS_UPDATE=?, IS_DELETE=?, LAST_UPDATED=current_timestamp where ID=? ";
                 preStmt = conn.prepareStatement(strSQL);
                 preStmt.setString(1, obj.getAdmin());
                 preStmt.setBigDecimal(2, obj.getLink_id());
@@ -66,8 +66,8 @@ public class AdminRoleDAO {
                 if (obj.getIs_select() == 1 && obj.getIs_insert() == 1 && obj.getIs_update() == 1 && obj.getIs_delete() == 1) {
 
                 } else {
-                    strSQL = " insert into ADMIN_ROLE (ID, ADMIN, LINK_ID, IS_SELECT, IS_INSERT, IS_UPDATE, IS_DELETE, GEN_DATE, CREATED_BY) "
-                            + " values(ADMIN_ROLE_SEQ.nextval, ?, ?, ?, ?, ?, ?, sysdate, ?)";
+                    strSQL = " insert into ADMIN_ROLE ( ADMIN, LINK_ID, IS_SELECT, IS_INSERT, IS_UPDATE, IS_DELETE, GEN_DATE, CREATED_BY) "
+                            + " values(?, ?, ?, ?, ?, ?, current_timestamp, ?)";
                     preStmt = conn.prepareStatement(strSQL);
                     preStmt.setString(1, obj.getAdmin());
                     preStmt.setBigDecimal(2, obj.getLink_id());
@@ -82,6 +82,7 @@ public class AdminRoleDAO {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("insertRow: Error executing SQL " + strSQL + ">>>" + e.toString());
             System.out.println("insertRow: " + e.getMessage());
         } finally {
@@ -100,7 +101,7 @@ public class AdminRoleDAO {
         boolean result = false;
         try {
             conn = poolAdActive.getConnection();
-            strSQL = " update ADMIN_ROLE set ADMIN=?, LINK_ID=?, IS_SELECT=?, IS_INSERT=?, IS_UPDATE=?, IS_DELETE=?, LAST_UPDATED=sysdate where ID=? ";
+            strSQL = " update ADMIN_ROLE set ADMIN=?, LINK_ID=?, IS_SELECT=?, IS_INSERT=?, IS_UPDATE=?, IS_DELETE=?, LAST_UPDATED=current_timestamp where ID=? ";
             preStmt = conn.prepareStatement(strSQL);
             preStmt.setString(1, obj.getAdmin());
             preStmt.setBigDecimal(2, obj.getLink_id());
@@ -113,6 +114,7 @@ public class AdminRoleDAO {
                 result = true;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("updateRow: Error executing SQL " + strSQL + ">>>" + e.toString());
             System.out.println("updateRow: " + e.getMessage());
         } finally {
@@ -129,7 +131,7 @@ public class AdminRoleDAO {
         AdminRole obj = null;
         try {
             conn = poolAdStandby.getConnection();
-            strSQL = "select ADMIN_ROLE.*, ADMIN_LINK.NAME, ADMIN_LINK.URI from ADMIN_ROLE join ADMIN_LINK on ADMIN_ROLE.LINK_ID = ADMIN_LINK.ID where ID = ?";
+            strSQL = "select ADMIN_ROLE.*, ADMIN_LINK.NAME, ADMIN_LINK.URI from ADMIN_ROLE join ADMIN_LINK on ADMIN_ROLE.LINK_ID = ADMIN_LINK.ID where ADMIN_ROLE.ID = ?";
             preStmt = conn.prepareStatement(strSQL);
             preStmt.setBigDecimal(1, id);
             rs = preStmt.executeQuery();
@@ -151,6 +153,7 @@ public class AdminRoleDAO {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("getRow: Error executing SQL " + strSQL + ">>>"
                     + e.toString());
         } finally {
@@ -187,6 +190,7 @@ public class AdminRoleDAO {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("getRole: Error executing SQL " + strSQL + ">>>"
                     + e.toString());
         } finally {
@@ -211,6 +215,7 @@ public class AdminRoleDAO {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("deleteRow: Error executing SQL " + strSQL + ">>>"
                     + e.toString());
         } finally {
@@ -235,6 +240,7 @@ public class AdminRoleDAO {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("deleteRow: Error executing SQL " + strSQL + ">>>"
                     + e.toString());
         } finally {
@@ -269,12 +275,12 @@ public class AdminRoleDAO {
         try {
             conn = poolAdStandby.getConnection();
 
-            strSQL = "select * from "
+            strSQL = "select aa.* from "
                     + "	( select ADMIN_ROLE.*, ADMIN_LINK.NAME, ADMIN_LINK.URI, "
                     + "	row_number() over(order by ADMIN_ROLE.ID desc) as R "
                     + "	from ADMIN_ROLE join ADMIN_LINK on ADMIN_ROLE.LINK_ID = ADMIN_LINK.ID "
-                    + "	where ADMIN_ROLE.ID >0 " + where + ")"
-                    + " where R>=? and R<=?";
+                    + "	where ADMIN_ROLE.ID >0 " + where + ") aa"
+                    + " where aa.R>=? and aa.R<=?";
 
             preStmt = conn.prepareStatement(strSQL);
             preStmt.setInt(1, startRow);
@@ -341,9 +347,11 @@ public class AdminRoleDAO {
                 result = rs.getInt(1);
             }
         } catch (SQLException ex) {
+            ex.printStackTrace();
             logger.error(this.getClass().getName() + ".countAllObjHaskey | SQL | " + ex.getErrorCode() + ":" + ex.getMessage() + " | Error executing " + strSQL + " >>> "
                     + ex.getMessage());
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error(this.getClass().getName() + ".countAllObjHaskey | ex: " + ex.toString());
         } finally {
             poolAdStandby.releaseConnection(conn, preStmt, rs);
@@ -352,7 +360,6 @@ public class AdminRoleDAO {
     }
 
     public boolean InsertRole() {
-        boolean result = false;
         Connection conn = null;
         PreparedStatement preStmt = null;
         PreparedStatement preStmt2 = null;
@@ -373,8 +380,8 @@ public class AdminRoleDAO {
                 name = rs.getString("user_name");
                 System.out.println(name + "--->name");
 
-                strSQL = " insert into ADMIN_ROLE (ID, ADMIN, LINK_ID, IS_SELECT, IS_INSERT, IS_UPDATE, IS_DELETE, GEN_DATE, CREATED_BY) "
-                        + " values(ADMIN_ROLE_SEQ.nextval, ?, ?, ?, ?, ?, ?, sysdate, sysdate)";
+                strSQL = " insert into ADMIN_ROLE ( ADMIN, LINK_ID, IS_SELECT, IS_INSERT, IS_UPDATE, IS_DELETE, GEN_DATE, CREATED_BY) "
+                        + " values(?, ?, ?, ?, ?, ?, current_timestamp, current_timestamp)";
                 preStmt2 = conn.prepareStatement(strSQL);
                 preStmt2.setString(1, name);
                 preStmt2.setBigDecimal(2, new BigDecimal(410));
@@ -388,7 +395,9 @@ public class AdminRoleDAO {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("exception: " + e.getMessage());
+            logger.error(e);
         } finally {
             poolAdActive.releaseConnection(conn, preStmt, rs);
         }

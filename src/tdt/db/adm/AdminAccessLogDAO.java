@@ -18,8 +18,8 @@ public class AdminAccessLogDAO {
 	private DBPoolX poolAdActive = null;
 	public AdminAccessLogDAO(){
 		try {
-			poolAdStandby=DBPoolX.getInstance(DBPoolXName.AD_SPLUS_STANBY);
-			poolAdActive=DBPoolX.getInstance(DBPoolXName.AD_SPLUS_ACTIVE);
+			poolAdStandby=DBPoolX.getInstance(DBPoolXName.AD_STANBY);
+			poolAdActive=DBPoolX.getInstance(DBPoolXName.AD_ACTIVE);
 			logger =new Logger(this.getClass().getName());
 		} catch (Exception e) {}	
 	}
@@ -32,8 +32,8 @@ public class AdminAccessLogDAO {
 		boolean result=false;
 		try{
 			conn = poolAdActive.getConnection();
-			strSQL= " INSERT INTO  ADMIN_ACCESS_LOG(ID, USRNAME, IP, BROWSER, LOGIN_TIME) " +
-					" VALUES(ADMIN_ACCESS_LOG_SEQ.nextval, ?, ?, ?, ?)";
+			strSQL= " INSERT INTO  ADMIN_ACCESS_LOG( USRNAME, IP, BROWSER, LOGIN_TIME) " +
+					" VALUES(?, ?, ?, ?)";
 			preStmt = conn.prepareStatement(strSQL);
 			preStmt.setString(1, member.getUsrname());
 			preStmt.setString(2, member.getIp());
@@ -128,11 +128,11 @@ public class AdminAccessLogDAO {
 		try{
 			result = new Vector<AdminAccessLog>();
 			conn = poolAdStandby.getConnection();
-			strSQL= "select * from" +
+			strSQL= "select aa.* from" +
 					"	( select ADMIN_ACCESS_LOG.*," +
-					"		row_number() over( order by ID desc ) as R " +
-					" 		from ADMIN_ACCESS_LOG where USRNAME like ?" +
-					" ) where R>=? and R<=? ";
+					"		row_number() over( order by ADMIN_ACCESS_LOG.ID desc ) as R " +
+					" 		from ADMIN_ACCESS_LOG where ADMIN_ACCESS_LOG.USRNAME like ?" +
+					" ) aa where aa.R>=? and aa.R<=? ";
 			preStmt = conn.prepareStatement(strSQL);
 			preStmt.setString(1, admin.trim());
 			preStmt.setInt(2, startRow);

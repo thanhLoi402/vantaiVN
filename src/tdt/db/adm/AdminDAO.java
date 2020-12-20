@@ -18,8 +18,8 @@ public class AdminDAO {
 	private DBPoolX poolAdActive = null;
 	public AdminDAO(){
 		try {
-			poolAdStandby=DBPoolX.getInstance(DBPoolXName.AD_SPLUS_STANBY);
-			poolAdActive=DBPoolX.getInstance(DBPoolXName.AD_SPLUS_ACTIVE);
+			poolAdStandby=DBPoolX.getInstance(DBPoolXName.AD_STANBY);
+			poolAdActive=DBPoolX.getInstance(DBPoolXName.AD_ACTIVE);
 			logger =new Logger(this.getClass().getName());
 		} catch (Exception e) {}	
 	}
@@ -32,9 +32,9 @@ public class AdminDAO {
 		boolean result=false;
 		try{
 			conn = poolAdActive.getConnection();
-			strSQL= " INSERT INTO  admin(ID, USER_NAME, PASSWD, GEN_DATE, STATUS, " +
+			strSQL= " INSERT INTO  admin( USER_NAME, PASSWD, GEN_DATE, STATUS, " +
 					"					RIGHT_ROLE, FULL_NAME, MOBILE, EMAIL, IP) " +
-					" VALUES(ADMIN_SEQ.nextval,?,?,sysdate,?," +
+					" VALUES(,?,?,current_timestamp,?," +
 					"			?, ?, ?, ?, ?)";
 			preStmt = conn.prepareStatement(strSQL);
 			preStmt.setString(1, member.getUserName().trim());
@@ -50,6 +50,7 @@ public class AdminDAO {
 				result=true;
 			}
 		}catch(Exception e){
+                    e.printStackTrace();
 			logger.error("insertRow: Error executing SQL " + strSQL + ">>>" + e.toString());
 			System.out.println("[ERROR MEMBER ] insertRow "+e.getMessage());
 		}finally{
@@ -68,7 +69,7 @@ public class AdminDAO {
 		try{
 			conn = poolAdActive.getConnection();
 			strSQL= " UPDATE " +
-					" admin SET PASSWD = ?,STATUS = ? ,GEN_DATE = sysdate, " +
+					" admin SET PASSWD = ?,STATUS = ? ,GEN_DATE = current_timestamp, " +
 					"			RIGHT_ROLE = ?, FULL_NAME = ?, MOBILE = ?, EMAIL = ?, IP = ? " +
 					" WHERE ID = ? ";
 			preStmt = conn.prepareStatement(strSQL);			
@@ -85,6 +86,7 @@ public class AdminDAO {
 				result=true;
 			}
 		}catch(Exception e){
+                    e.printStackTrace();
 			logger.error("updateRow: Error executing SQL " + strSQL + ">>>" + e.toString());
 			System.out.println("updateRow: Error executing SQL " + ">>>" + e.getMessage());
 		}finally{
@@ -110,6 +112,7 @@ public class AdminDAO {
 				result=true;
 			}
 		}catch(SQLException e){
+                    e.printStackTrace();
 			logger.error("deleteRow: Error executing SQL " + strSQL + ">>>" + e.toString());
 		}finally{
 			poolAdActive.releaseConnection(conn, preStmt);
@@ -136,7 +139,7 @@ public class AdminDAO {
 					"		RIGHT_ROLE, FULL_NAME, MOBILE, EMAIL, IP," +
 					"		row_number() over( order by GEN_DATE desc ) as R " +
 					" 		FROM 	 admin WHERE USER_NAME like ? " +
-					" ) where R>=? and R<=? ";
+					" ) aa where R>=? and R<=? ";
 			preStmt = conn.prepareStatement(strSQL);
 			preStmt.setString(1, var.trim());
 			preStmt.setInt(2, startRow);
@@ -157,6 +160,7 @@ public class AdminDAO {
 				result.add(adm);
 			}
 		}catch(Exception e){
+                    e.printStackTrace();
 			logger.error("getAll: Error executing SQL " + strSQL + ">>>" + e.toString());
 		}finally{
 			poolAdStandby.releaseConnection(conn, preStmt,rs);
@@ -205,6 +209,7 @@ public class AdminDAO {
 				result.add(adm);
 			}
 		}catch(Exception e){
+                    e.printStackTrace();
 			logger.error("getAll: Error executing SQL " + strSQL + ">>>" + e.toString());
 		}finally{
 			poolAdStandby.releaseConnection(conn, preStmt,rs);

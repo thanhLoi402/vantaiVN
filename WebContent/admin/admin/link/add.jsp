@@ -264,7 +264,7 @@
 				  					<select name="slt_parentId" >
 										<option value="0">Root</option>
 										<%
-											Vector<AdminLink> cAdminLink = adminLinkDAO.getTreeView(-1);
+											Vector<AdminLink> cAdminLink = adminLinkDAO.getTreeView2(new BigDecimal(0), -1); 
 											String str = "";
 											int pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, pos5 = 0;
 											int level = 0;

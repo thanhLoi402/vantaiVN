@@ -16,7 +16,7 @@ public class DaoExcuteSql {
 
     public DaoExcuteSql() {
         try {
-            this.poolConn = DBPoolX.getInstance(DBPoolXName.SERVICE_SPLUS_ACTIVE);
+            this.poolConn = DBPoolX.getInstance(DBPoolXName.AD_STANBY);
             this.logger = new Logger(getClass().getName());
         } catch (Exception e) {
             e.printStackTrace();

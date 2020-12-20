@@ -172,7 +172,7 @@ class ConnectionParameter {
     public static void main(String[] args) {
         try {
             System.out.println(Encrypter.decrypt("3x8AMHEEqKXxzsUZ6Jk4ew=="));
-            System.out.println(Encrypter.encrypt("ntl2019"));
+            System.out.println(Encrypter.encrypt("ThanhLoisql2020"));
         } catch (Exception e) {
         }
     }

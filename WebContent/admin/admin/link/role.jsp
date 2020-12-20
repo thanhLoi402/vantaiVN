@@ -155,7 +155,8 @@
 	String admin = request.getParameter("admin");
 	if(admin == null) admin = "";
 	
-	Vector<AdminLink> cAdminLink = adminLinkDAO.getTreeView(-1);
+//	Vector<AdminLink> cAdminLink = adminLinkDAO.getTreeView(-1);
+	Vector<AdminLink> cAdminLink = adminLinkDAO.getTreeView2(new BigDecimal(0), -1); 
 	
 	if(sAction.equals("UPDATE")){
 		if(!curPageIsUpdate || !curPageIsInsert){

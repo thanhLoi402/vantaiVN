@@ -165,9 +165,9 @@
             <%
                 session.setAttribute("currentURI", request.getRequestURI().toString());
             %>
-            <a href="<%=request.getContextPath() %>/admin/admin/link/reloadMenu.jsp" style="padding-top: 20px;">
+<!--            <a href="<%=request.getContextPath() %>/admin/admin/link/reloadMenu.jsp" style="padding-top: 20px;">
                 &laquo; reload menu &raquo;
-            </a>
+            </a>-->
             &nbsp;&nbsp;
         </p>
 

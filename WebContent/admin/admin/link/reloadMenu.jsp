@@ -1,3 +1,4 @@
+<%@page import="java.math.BigDecimal"%>
 <%@page language="java" pageEncoding="utf-8"%>
 <%@page import="java.util.*"%>
 <jsp:useBean id="admDAO" class="tdt.db.adm.AdminDAO" scope="session"/>
@@ -14,7 +15,7 @@
 		session.setAttribute("datavasosp.adm.type", adm.getRightRole());
 		Collection cAdminRole = adminRoleDAO.findAllObjHaskey(adm.getUserName(), "", 1, 1000);
 		session.setAttribute("datavasosp.adm.role", cAdminRole);
-		session.setAttribute("datavasosp.adm.menu", adminLinkDAO.getTreeView2Level("0,9"));
+		session.setAttribute("datavasosp.adm.menu", adminLinkDAO.getTreeView2(new BigDecimal(0), -1));
 		session.setAttribute("datavasosp.adm.menuAll", adminLinkDAO.findAll());
 	}
 	String URIRedirect;
